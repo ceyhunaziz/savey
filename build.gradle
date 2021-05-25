@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
+group 'az.savey'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // spring
+    compile("org.springframework.boot:spring-boot-starter-web")
+}
