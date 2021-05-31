@@ -1,19 +1,113 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id "org.sonarqube" version "2.8"
+    id "java-library"
 }
 
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.springframework.boot'
-
-group 'az.savey'
-version '1.0-SNAPSHOT'
+apply plugin: 'jacoco'
+apply plugin: 'groovy'
+apply plugin: 'org.sonarqube'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
     // spring
-    compile("org.springframework.boot:spring-boot-starter-web")
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+        exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-core'
+        exclude group: 'org.springframework:spring-web:5.2.2.RELEASE'
+    }
+
+    //tomcat
+    implementation('org.apache.tomcat.embed:tomcat-embed-core:9.0.43')
+
+    // logging
+    compile('net.logstash.logback:logstash-logback-encoder:6.3') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+    }
+
+    // data
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa') {
+        exclude group: 'org.dom4j', module: 'dom4j'
+        exclude group: 'org.hibernate', module: 'hibernate-core'
+    }
+    compile group: 'org.dom4j', name: 'dom4j', version: '2.1.3'
+    implementation('org.hibernate:hibernate-core:5.4.24.Final')
+
+    //liquibase
+    compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.2'
+
+    //shedlock
+    implementation('net.javacrumbs.shedlock:shedlock-spring:2.2.0')
+    implementation('net.javacrumbs.shedlock:shedlock-provider-jdbc-template:2.2.0')
+
+    //jackson
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.5.1'
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //mapper
+    implementation('org.mapstruct:mapstruct-jdk8:1.3.0.Final')
+    annotationProcessor('org.mapstruct:mapstruct-jdk8:1.3.0.Final')
+    annotationProcessor('org.mapstruct:mapstruct-processor:1.3.0.Final')
+
+    //postgresql
+    runtimeOnly('org.postgresql:postgresql:42.2.16')
+
+    //swagger
+    implementation('io.springfox:springfox-swagger2:2.9.2') {
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    implementation('io.springfox:springfox-swagger-ui:2.9.2') {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    //guava
+    implementation('com.google.guava:guava:28.1-jre')
+
+    //test
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.spockframework:spock-spring:1.3-groovy-2.5')
+    testImplementation('io.github.benas:random-beans:3.9.0')
+
+    // feign client
+    implementation('org.springframework.cloud:spring-cloud-starter-openfeign:2.2.2.RELEASE')
+    implementation('io.github.openfeign:feign-httpclient:10.9')
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+
+    //validation
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+        compileJava {
+            targetCompatibility = 11
+            sourceCompatibility = 11
+        }
+    }
+}
+
+jacoco {
+    toolVersion = '0.8.5'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
 }

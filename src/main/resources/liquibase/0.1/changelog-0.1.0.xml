@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create_credit_table" author="Jeyhun Azizzade">
+        <createTable tableName="credits">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="description" type="TEXT"/>
+            <column name="item" type="TEXT"/>
+            <column name="payment_link" type="TEXT"/>
+            <column name="total_amount" type="DOUBLE"/>
+
+            <column name="start_date" type="DATE"/>
+
+            <column name="is_active" type="BOOL"/>
+
+            <column name="created_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_shedlock_table" author="Jeyhun Azizzade">
+        <createTable tableName="shedlock">
+
+            <column name="name" type="VARCHAR(64)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="lock_until" type="TIMESTAMP"/>
+            <column name="locked_at" type="TIMESTAMP"/>
+            <column name="locked_by" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
