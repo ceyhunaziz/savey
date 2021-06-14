@@ -32,6 +32,30 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="create_account_table" author="Jeyhun Azizzade">
+        <createTable tableName="accounts">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="title" type="TEXT"/>
+            <column name="username" type="TEXT"/>
+            <column name="password" type="TEXT"/>
+
+            <column name="is_active" type="BOOL"/>
+
+            <column name="created_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
     <changeSet id="create_shedlock_table" author="Jeyhun Azizzade">
         <createTable tableName="shedlock">
 
