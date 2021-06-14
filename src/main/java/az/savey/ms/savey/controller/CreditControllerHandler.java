@@ -1,5 +1,6 @@
 package az.savey.ms.savey.controller;
 
+import az.savey.ms.savey.exception.AccountException;
 import az.savey.ms.savey.exception.CreditException;
 import az.savey.ms.savey.exception.StatusCode;
 import az.savey.ms.savey.model.BaseResponse;
@@ -13,7 +14,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CreditControllerHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CreditException.class)
-    public ResponseEntity<BaseResponse> applicationException(CreditException e) {
+    public ResponseEntity<BaseResponse> creditException(CreditException e) {
+        return new ResponseEntity<>(setMessage(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AccountException.class)
+    public ResponseEntity<BaseResponse> accountException(AccountException e) {
         return new ResponseEntity<>(setMessage(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
